@@ -1,0 +1,543 @@
+$itemSize:24px;
+$itemHeaderSize:18px;
+$headerHeight:28px;
+
+$calWidth:$itemSize*10;
+$calContentHeight: $itemSize*6 + $itemHeaderSize;
+$calHeight: $calContentHeight + $headerHeight;
+
+$pickerWidth:$itemSize*7;
+$hourPickerWidth:$itemSize*4;
+$minutePickerWidth:$itemSize*10;
+$secondPickerWidth:$itemSize*10;
+
+$colBackground: #f9f9f9;
+$colForeground: #444;
+//$colAccentBackground: coral;
+$colAccentBackground: #ae5bb3;
+$colAccentForeground: #FFFFFF;
+
+$colButtonHover: darken($colAccentBackground, 10%);
+$colButtonActive: darken($colAccentBackground, 20%);
+$colButtonFade: fade-out($colForeground, 0.6);
+$colButtonToday: grayscale($colAccentBackground);
+$colButtonTodayHover: darken($colAccentBackground, 30%);
+$colButtonTodayActive: darken($colAccentBackground, 20%);
+
+$colHeaderBackground: darken($colBackground, 14%);
+$colPagerButton: lighten($colHeaderBackground, 7%);
+$colPagerButtonHover: darken($colHeaderBackground, 14%);
+$colPagerButtonActive: darken($colHeaderBackground, 7%);
+
+$fontSizeBig: 14px;
+$fontSizeHuge: 18px;
+$fontSize: 12px;
+
+.cal-wrap {
+  position: relative;
+}
+
+.cal {
+  cursor: default;
+  display:block;
+  position: absolute;
+  overflow: hidden;
+  z-index: 1;
+  right: 0;
+  width:$calWidth;
+  height:$calHeight;
+
+  font-family:"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: $fontSize;
+
+  background-color: $colBackground;
+  color:$colForeground;
+
+  box-shadow: 0px 2px 5px -2px $colForeground;
+
+  display: none;
+
+  * {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  &.cal-visible {
+    display: block;
+  }
+
+  .cal-head {
+    height:$headerHeight;
+    display:block;
+    font-weight: bold;
+    font-size: $fontSizeBig;
+    background-color: $colHeaderBackground;
+    .cal-head-left, .cal-head-pager, .cal-head-right {
+      position: absolute;
+      line-height: $headerHeight;
+    }
+    .cal-head-left {
+      right: $calWidth * 3/10;
+      left:0;
+      padding-left: 5px;
+      text-align: left;
+    }
+    .cal-head-pager {
+      $pagerButtonSize: $itemSize*0.75;
+      left: $calWidth * 4/10;
+      right: $calWidth * 3/10;
+      width: auto;
+      color: $colPagerButton;
+      .cal-head-pager-prev, .cal-head-pager-now, .cal-head-pager-next {
+        position: absolute;
+        width: $pagerButtonSize;
+        display:block;
+        right:0;
+        text-align: center;
+        font-size: $fontSize;
+        &:hover {
+          color: $colPagerButtonHover;
+        }
+        &:active {
+          color: $colPagerButtonActive;
+        }
+      }
+      .cal-head-pager-now {
+        right: $pagerButtonSize;
+        font-size: $fontSize*1.4;
+      }
+      .cal-head-pager-prev {
+        right: 2*$pagerButtonSize;
+      }
+    }
+    .cal-head-right {
+      left: $calWidth * 7/10;
+      right:0;
+      padding-right: 5px;
+      text-align: right;
+      background-color: $colAccentBackground;
+      color: $colAccentForeground;
+    }
+  }
+
+  .cal-body {
+    position:absolute;
+    top:$headerHeight;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    .cal-body-date, .cal-body-months {
+      position: absolute;
+      left: 0;
+      right: $calWidth - $pickerWidth;
+      background-color: $colBackground;
+      z-index: 1;
+    }
+    .cal-body-months {
+      bottom: 0;
+      top: 0;
+      > button {
+        padding:0;
+        margin:0;
+        display: block;
+        width: percentage(1/3);
+        height: percentage(1/4);
+      }
+      display:none;
+      &.cal-visible {
+        display: block;
+      }
+    }
+
+    .cal-body-years, .cal-body-time-hour, .cal-body-time-minute, .cal-body-time-second {
+      position:absolute;
+      right:0;
+      top:0;
+      bottom:0;
+      left:auto;
+      color: $colAccentForeground;
+      .cal-list-head {
+        width: $itemSize;
+        color: $colAccentForeground;
+        text-align: center;
+      }
+    }
+    .cal-body-time-hour {
+      right:-$hourPickerWidth + 3*$itemSize;
+      width:$hourPickerWidth;
+      background-color: $colAccentBackground;
+      z-index: 1;
+      > .cal-column {
+        width:$hourPickerWidth;
+        > button {
+          color: lighten($colAccentBackground, 20%);
+        }
+      }
+      &.in {
+        right:2*$itemSize;//width of minutes
+        > .cal-column > button {
+          &[data-hour="0"],
+          &[data-hour="6"],
+          &[data-hour="12"],
+          &[data-hour="18"]
+          {
+            color:lighten($colAccentBackground, 40%);
+            font-weight: bolder;
+          }
+        }
+      }
+      &.out {
+        right:$calWidth;
+      }
+    }
+    .cal-body-time-minute {
+      right:-$minutePickerWidth + 2*$itemSize;
+      width:$minutePickerWidth;
+      background-color: lighten($colAccentBackground,7%);
+      z-index: 2;
+      > .cal-column {
+        width:$minutePickerWidth;
+        > button {
+          color: lighten($colAccentBackground, 24%)
+        }
+      }
+      &.in {
+        right:0;
+        > .cal-column > button {
+          &[data-minute="0"],
+          &[data-minute="15"],
+          &[data-minute="30"],
+          &[data-minute="45"]
+          {
+            color:lighten($colAccentBackground, 40%);
+            font-weight: bolder;
+          }
+        }
+      }
+      &.out {
+        right:$calWidth;
+      }
+    }
+    .cal-body-time-second {
+      right:-$secondPickerWidth + $itemSize;
+      width:$secondPickerWidth;
+      background-color: lighten($colAccentBackground,14%);
+      z-index: 3;
+      > .cal-column {
+        width:$secondPickerWidth;
+        > button {
+          color: lighten($colAccentBackground, 26%);
+        }
+      }
+      &.in {
+        right:0;
+        > .cal-column > button {
+          &[data-second="0"],
+          &[data-second="10"],
+          &[data-second="20"],
+          &[data-second="30"],
+          &[data-second="40"],
+          &[data-second="50"]
+          {
+            color:lighten($colAccentBackground, 40%);
+            font-weight: bolder;
+          }
+        }
+      }
+      &.out {
+        right:-$calWidth;
+      }
+    }
+    .cal-body-time {
+      right:0;
+      top:0;
+      bottom: 0;
+      width:3*$itemSize;
+      z-index: 4;
+      color: $colAccentForeground;
+      font-size: 3*$fontSizeBig;
+      padding-top: $calContentHeight/2 - (3*$fontSizeBig/2);
+      text-align: center;
+      &:hover {
+        background-color: transparentize($colButtonHover, 0.3);
+        &:before {
+          content: '+';
+        }
+      }
+      &:active {
+        background-color: transparentize($colButtonActive, 0.3);
+      }
+    }
+    .cal-body-years {
+      right:0;
+      width:3*$itemSize;
+      background-color: $colAccentBackground;
+      z-index: 5;
+      height: 100%;
+      overflow-y: auto;
+      display:none;
+      > button {
+        width: 100%;
+        float: none;
+        text-align: right;
+        color: $colAccentForeground;
+        padding-right: 5px;
+      }
+      &.cal-visible {
+        display: block;
+      }
+    }
+
+    .cal-list-head {
+      color: $colAccentBackground;
+      + .cal-column, + * +.cal-column {
+        top: $itemHeaderSize;
+      }
+      height: $itemHeaderSize;
+      > ul {
+        padding: 0;
+        margin:0;
+        > li {
+          list-style: none;
+          display: inline-block;
+          width: $itemSize;
+          text-align: center;
+        }
+      }
+    }
+    .cal-list-head-cancel {
+      position: absolute;
+      right: 0;
+      top:0;
+      width:$itemSize;
+      height:$itemHeaderSize;
+      text-align: center;
+      &:hover {
+        background-color: $colButtonHover;
+      }
+      &:active {
+        background-color: $colButtonActive;
+      }
+    }
+  }
+
+  .cal-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .cal-list {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    > .cal-column {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      -webkit-transition: left 250ms ease-in-out 150ms;
+      -moz-transition: left 250ms ease-in-out 150ms;
+      -ms-transition: left 250ms ease-in-out 150ms;
+      -o-transition: left 250ms ease-in-out 150ms;
+      transition: left 250ms ease-in-out 150ms;
+    }
+
+    > .cal-offset-1 { left: -1 * $itemSize; }
+    > .cal-offset-2 { left: -2 * $itemSize; }
+    > .cal-offset-3 { left: -3 * $itemSize; }
+    > .cal-offset-4 { left: -4 * $itemSize; }
+    > .cal-offset-5 { left: -5 * $itemSize; }
+    > .cal-offset-6 { left: -6 * $itemSize; }
+    > .cal-offset-7 { left: -7 * $itemSize; }
+    > .cal-offset-8 { left: -8 * $itemSize; }
+    > .cal-offset-9 { left: -9 * $itemSize; }
+
+    &.in > .cal-list-head, &.out > .cal-list-head {
+      width:auto;
+    }
+
+    &.in, &.out {
+      > .cal-offset-1, > .cal-offset-1,
+      > .cal-offset-2, > .cal-offset-2,
+      > .cal-offset-3, > .cal-offset-3,
+      > .cal-offset-4, > .cal-offset-4,
+      > .cal-offset-5, > .cal-offset-5,
+      > .cal-offset-6, > .cal-offset-6,
+      > .cal-offset-7, > .cal-offset-7,
+      > .cal-offset-8, > .cal-offset-8,
+      > .cal-offset-9, > .cal-offset-9,
+      {
+        left:0;
+      }
+    }
+
+    > button, > div > button {
+      width:$itemSize;
+      height:$itemSize;
+      line-height: $itemSize;
+      display: block;
+      float: left;
+      text-align: center;
+      background-color: transparent;
+      border: 0px solid transparent;
+      box-shadow: none;
+      outline: none;
+      padding: 0;
+      &:hover {
+        color: $colAccentForeground;
+        background-color: $colButtonHover;
+      }
+      &:active, &.active {
+        color: $colAccentForeground;
+        background-color: $colButtonActive;
+      }
+      &.pre, &.post {
+        color: $colButtonFade;
+      }
+      &.today {
+        color: $colAccentForeground;
+        background-color: $colButtonToday;
+        border-radius: 20px;
+        &:hover {
+          color: $colAccentForeground;
+          background-color: $colButtonTodayHover;
+        }
+        &:active, &.active {
+          color: $colAccentForeground;
+          background-color: $colButtonTodayActive;
+        }
+      }
+    }
+
+    -webkit-transition: right 250ms ease-in-out 150ms;
+    -moz-transition: right 250ms ease-in-out 150ms;
+    -ms-transition: right 250ms ease-in-out 150ms;
+    -o-transition: right 250ms ease-in-out 150ms;
+    transition: right 250ms ease-in-out 150ms;
+  }
+}
+
+.cal>.cal-body>.cal-list,
+.cal>.cal-body>.cal-list>.cal-column,
+.cal>.cal-body>.cal-list>.cal-column>button
+{
+  -webkit-transition: width 150ms;
+  -moz-transition: width 150ms;
+  -ms-transition: width 150ms;
+  -o-transition: width 150ms;
+  transition: width 150ms;
+}
+
+.cal.cal-seconds-off {
+  $twoItemSize: $itemSize*1.5;
+  $twoItemHourPickerWidth: $twoItemSize * 4;
+  $twoItemMinutePickerWidth: $twoItemSize * 10;
+  .cal-body {
+    .cal-body-years, .cal-body-time-hour, .cal-body-time-minute, .cal-body-time-second {
+      .cal-list-head {
+        width: $twoItemSize;
+      }
+    }
+
+    .cal-body-time-hour {
+      width: $twoItemHourPickerWidth;
+      right:-$twoItemHourPickerWidth + $twoItemSize + $twoItemSize;
+      > .cal-column {
+        width:$twoItemHourPickerWidth - $twoItemSize + $twoItemSize;
+        > button {
+          width:$twoItemSize;
+        }
+      }
+      &.in {
+        right:$twoItemSize;//width of minutes
+      }
+      &.out {
+        right:$calWidth;
+      }
+      &.in, &.out {
+        width:$hourPickerWidth;
+        > .cal-column {
+          width:$hourPickerWidth;
+          > button {
+            width:$itemSize;
+          }
+        }
+      }
+
+    }
+    .cal-body-time-minute {
+      width: $twoItemMinutePickerWidth;
+      right:-$twoItemMinutePickerWidth + $twoItemSize;
+      > .cal-column {
+        width:$twoItemMinutePickerWidth;
+        > button {
+          width:$twoItemSize;
+        }
+      }
+      &.in {
+        right:0;
+      }
+      &.out {
+        right:$calWidth;
+      }
+      &.in, &.out {
+        width:$minutePickerWidth;
+        > .cal-column {
+          width:$minutePickerWidth;
+          > button {
+            width:$itemSize;
+          }
+        }
+      }
+    }
+    .cal-body-time {
+      //width:2*$itemSize;
+    }
+  }
+
+  .cal-list {
+    &.in > .cal-list-head, &.out > .cal-list-head {
+      width:auto;
+    }
+  }
+
+  .cal-list.cal-body-time-minute, .cal-list.cal-body-time-hour {
+    > .cal-offset-1 { left: -1 * $twoItemSize; }
+    > .cal-offset-2 { left: -2 * $twoItemSize; }
+    > .cal-offset-3 { left: -3 * $twoItemSize; }
+    > .cal-offset-4 { left: -4 * $twoItemSize; }
+    > .cal-offset-5 { left: -5 * $twoItemSize; }
+    > .cal-offset-6 { left: -6 * $twoItemSize; }
+    > .cal-offset-7 { left: -7 * $twoItemSize; }
+    > .cal-offset-8 { left: -8 * $twoItemSize; }
+    > .cal-offset-9 { left: -9 * $twoItemSize; }
+
+    &.in, &.out {
+      > .cal-offset-1, > .cal-offset-1,
+      > .cal-offset-2, > .cal-offset-2,
+      > .cal-offset-3, > .cal-offset-3,
+      > .cal-offset-4, > .cal-offset-4,
+      > .cal-offset-5, > .cal-offset-5,
+      > .cal-offset-6, > .cal-offset-6,
+      > .cal-offset-7, > .cal-offset-7,
+      > .cal-offset-8, > .cal-offset-8,
+      > .cal-offset-9, > .cal-offset-9,
+      {
+        left:0;
+      }
+    }
+    
+    
+  }
+
+  &.in > .cal-list-head, &.out > .cal-list-head {
+    width:auto;
+  }
+}
+

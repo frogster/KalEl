@@ -1,0 +1,79 @@
+$accent: #AE5BB3;
+$grey:#666;
+
+html, body {
+  font: 14px/1.4 Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  width: 100%;
+  height: 100%;
+  padding:0;
+  margin:0;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: $accent;
+}
+
+.inner-body {
+  margin:0 auto;
+  width: 1000px;
+}
+
+header, footer, .content {
+
+}
+
+header, footer {
+  color: #FFF;
+}
+
+header {
+  font-size: 24px;
+  line-height: 30px;
+  h1 {
+    font-size: 48px;
+    margin: 30px 0;
+    line-height: 1.4em;
+  }
+  > div {
+    margin: 0 0 30px 0;
+  }
+}
+
+.content {
+  padding: 10px;
+  background-color: #FFF;
+  box-shadow: 0 0 1000px #333;
+}
+
+.sample {
+  position:relative;
+  display:block;
+  padding-left:250px;
+  &.sample-fix {
+    min-height: 220px;
+  }
+  > .sample-content {
+    position:absolute;
+    left:0;
+    top:0;
+  }
+  > code {
+    display:block;
+    padding: 10px 0;
+    color: #666;
+    white-space: pre;
+    border: 1px solid #efefef;
+  }
+}
+
+
+input[type="text"] {
+  outline: none;
+  width: 240px;
+  color: $grey;
+  border: 3px solid $accent;
+  padding: 5px 10px;
+  margin: 0;
+  box-sizing: border-box;
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Cal Demo</title>
+    <link rel="stylesheet" href="../kalEl/cal.css" type="text/css"/>
+    <link rel="stylesheet" href="index.css" type="text/css"/>
+    <script type="application/javascript" src="../kalEl/kalEl.js"></script>
+</head>
+<body>
+<div class="inner-body">
+    <header>
+        <h1>KalEl</h1>
+        <div>A date and time picker in plain JavaScript. No dependecy.</div>
+    </header>
+    <div class="content">
+        <section>
+            <h2>KalEl with standard configuration</h2>
+            <div class="sample">
+                <div class="sample-content">
+                    <input type="text" id="cal1" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal1_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl with a initial value set and week start on sunday</h2>
+            <div class="sample sample-fix">
+                <div class="sample-content">
+                    <input type="text" id="cal2" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal2_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl always visible and with second selection enabled</h2>
+            <div class="sample sample-fix">
+                <div class="sample-content">
+                    <input type="text" id="cal3" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal3_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl with overridden events</h2>
+            <div class="sample">
+                <div class="sample-content">
+                    <input type="text" id="cal5" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal5_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl with manually triggered behavior</h2>
+            <div class="sample">
+                <div class="sample-content">
+                    <div>
+                        <a href="#" id="cal6_show">Show</a>
+                        <a href="#" id="cal6_hide">Hide</a>
+                        <a href="#" id="cal6_toggle">Toggle</a>
+                    </div>
+                    <input type="text" id="cal6" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal6_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl without automatic wrapping disabled</h2>
+            <div class="sample sample-fix">
+                <div class="sample-content">
+                    <input type="text" id="cal4" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal4_code"></code>
+            </div>
+        </section>
+    </div>
+    <footer></footer>
+</div>
+
+<script id="cal1_src" type="application/javascript">
+window.cal1 = new KalEl(document.getElementById('cal1'));
+</script>
+<script id="cal2_src" type="application/javascript">
+var date2 = new Date(2013, 0, 16, 1, 14, 15);
+window.cal2 = new KalEl(document.getElementById('cal2'), {
+    visibility: 'visible',
+    value: date2,
+    weekStartsOnSun: true
+});
+</script>
+<script id="cal3_src" type="application/javascript">
+var date3 = new Date(2013, 4, 14, 5, 1, 45);
+window.cal3 = new KalEl(document.getElementById('cal3'), {
+    seconds: true,
+    visibility: 'visible',
+    value: date3
+});
+</script>
+<script id="cal4_src" type="application/javascript">
+var date4 = new Date(2013, 4, 14, 5, 1, 45);
+window.cal4 = new KalEl(document.getElementById('cal4'), {
+    seconds: true,
+    visibility: 'visible',
+    value: date4,
+    wrap: false
+});
+</script>
+<script id="cal5_src" type="application/javascript">
+window.cal5 = new KalEl(document.getElementById('cal5'), {
+    onDateChanging: function(kalEl, oldDate, newDate) {
+        if(newDate > new Date()) {
+            return true;
+        } else {
+            return confirm('Select this very old date ' + newDate.toLocaleString() + '?');
+        }
+    },
+    onDateChanged: function(kalEl, newDate) {
+        if(newDate <= new Date()) {
+            alert('Ok, did it!');
+        }
+        this.value = newDate ? newDate.toLocaleString() : '';
+    }
+});
+</script>
+<script id="cal6_src" type="application/javascript">
+window.cal6 = new KalEl(document.getElementById('cal6'), {
+    visibility: 'manual'
+});
+
+document.getElementById('cal6_show').addEventListener('click', function(event) {
+    window.cal6.show();
+    event.preventDefault();
+});
+document.getElementById('cal6_hide').addEventListener('click', function(event) {
+    window.cal6.hide();
+    event.preventDefault();
+});
+document.getElementById('cal6_toggle').addEventListener('click', function(event) {
+    window.cal6.toggle();
+    event.preventDefault();
+});
+</script>
+<script type="application/javascript">
+	var codeEl, srcEl;
+	for(var idx = 1, max = 100; idx < max; idx++) {
+        codeEl = document.getElementById('cal' + idx + '_code');
+        srcEl = document.getElementById('cal' + idx + '_src');
+        if(codeEl && srcEl) codeEl.innerHTML = srcEl.innerText;
+	}
+</script>
+</body>
+</html>
