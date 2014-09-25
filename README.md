@@ -3,6 +3,10 @@ KalEl
 
 A date and time picker in plain JavaScript. No dependecy.
 
+![](docs/kalel_1.png)
+
+[Watch a Demo here](https://rawgit.com/frogster/KalEl/master/demo/index.html)
+
 ## Basic Usage
 ```JavaScript
 var myCal1 = new KalEl(textbox1);
