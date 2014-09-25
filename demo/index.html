@@ -141,11 +141,19 @@ document.getElementById('cal6_toggle').addEventListener('click', function(event)
 });
 </script>
 <script type="application/javascript">
-	var codeEl, srcEl;
+	var codeEl, srcEl, src;
 	for(var idx = 1, max = 100; idx < max; idx++) {
         codeEl = document.getElementById('cal' + idx + '_code');
         srcEl = document.getElementById('cal' + idx + '_src');
-        if(codeEl && srcEl) codeEl.innerHTML = srcEl.innerText;
+
+        if(codeEl && srcEl) {
+            src = srcEl.innerHTML;
+            src = src.replace(/\n/g, '\n</br>');
+            src = src.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            src = src.trim().replace(/ /g, '&nbsp;');
+            src = src.replace(/^(<\/br>)|(<\/br>)$/g, '').trim();
+            codeEl.innerHTML = src;
+        };
 	}
 </script>
 </body>

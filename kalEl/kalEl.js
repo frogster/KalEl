@@ -1,4 +1,9 @@
 (function() {
+/***
+ *
+ * @type {KalEl}
+ * @constructor
+ */
   window.KalEl = KalEl = function(element, params, target) {
     //Default parameter hash
     var defaultParams = {
@@ -384,11 +389,17 @@
       display(null, '+1');
     }
 
+    /**
+    * Selects the current date and time. Just a shortcut.
+    */
     function selectNow() {
       resetView();
       select(new Date());
     }
 
+    /**
+    * Switches the displayed date to the current date. Just a shortcut.
+    */
     function displayNow() {
       resetView();
       var d = new Date();
@@ -808,12 +819,18 @@
       }
     }
 
+    /**
+    * Opens KalEl if the visibility allows it
+    */
     function show() {
       KalEl.current = self;
       addClass(self.kalEl, 'cal-visible');
       self.kalEl.style.zIndex = getZIndex();
     }
 
+    /**
+    * Hides KalEl if the visibility allows it
+    */
     function hide() {
       disableTimeSelector();
       hideMonths();
