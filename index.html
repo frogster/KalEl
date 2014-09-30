@@ -11,6 +11,9 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <script type="application/javascript" src="https://cdn.rawgit.com/frogster/KalEl/master/kalEl/kalEl.min.js"></script>
+      <link rel="stylesheet" href="stylesheets/cal.css">
   </head>
   <body>
     <div class="wrapper">
@@ -27,6 +30,64 @@
           <li><a href="https://github.com/frogster/KalEl">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
+      <section>
+          <h3>KalEl with standard configuration</h3>
+          <p>
+              This sample shows the usage of KalEl with the default configuration.
+              <div class="sample">
+                  <div class="sample-content">
+                      <input type="text" id="cal1" placeholder="Enter date and time ..."/>
+                  </div>
+                  <code id="cal1_code"></code>
+              </div>
+          </p>
+      
+          <h3>KalEl with a initial value set and week start on sunday</h3>
+          <div class="sample sample-fix">
+              <div class="sample-content">
+                  <input type="text" id="cal2" placeholder="Enter date and time ..."/>
+              </div>
+              <code id="cal2_code"></code>
+          </div>
+      
+          <h3>KalEl always visible and with second selection enabled</h3>
+          <div class="sample sample-fix">
+              <div class="sample-content">
+                  <input type="text" id="cal3" placeholder="Enter date and time ..."/>
+              </div>
+              <code id="cal3_code"></code>
+          </div>
+      
+          <h3>KalEl with overridden events</h3>
+          <div class="sample">
+              <div class="sample-content">
+                  <input type="text" id="cal5" placeholder="Enter date and time ..."/>
+              </div>
+              <code id="cal5_code"></code>
+          </div>
+      
+          <h3>KalEl with manually triggered behavior</h3>
+          <div class="sample">
+              <div class="sample-content">
+                  <div>
+                      <a href="#" id="cal6_show">Show</a>
+                      <a href="#" id="cal6_hide">Hide</a>
+                      <a href="#" id="cal6_toggle">Toggle</a>
+                  </div>
+                  <input type="text" id="cal6" placeholder="Enter date and time ..."/>
+              </div>
+              <code id="cal6_code"></code>
+          </div>
+      
+          <h3>KalEl without automatic wrapping disabled</h3>
+          <div class="sample sample-fix">
+              <div class="sample-content">
+                  <input type="text" id="cal4" placeholder="Enter date and time ..."/>
+              </div>
+              <code id="cal4_code"></code>
+          </div>
+      </section>
+        
       <section>
         <h3>
 <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
@@ -66,6 +127,88 @@ $ git checkout gh-pages
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+    <script id="cal1_src" type="application/javascript">
+        window.cal1 = new KalEl(document.getElementById('cal1'));
+    </script>
+    <script id="cal2_src" type="application/javascript">
+        var date2 = new Date(2013, 0, 16, 1, 14, 15);
+        window.cal2 = new KalEl(document.getElementById('cal2'), {
+            visibility: 'visible',
+            value: date2,
+            weekStartsOnSun: true
+        });
+    </script>
+    <script id="cal3_src" type="application/javascript">
+        var date3 = new Date(2013, 4, 14, 5, 1, 45);
+        window.cal3 = new KalEl(document.getElementById('cal3'), {
+            seconds: true,
+            visibility: 'visible',
+            value: date3
+        });
+    </script>
+    <script id="cal4_src" type="application/javascript">
+        var date4 = new Date(2013, 4, 14, 5, 1, 45);
+        window.cal4 = new KalEl(document.getElementById('cal4'), {
+            seconds: true,
+            visibility: 'visible',
+            value: date4,
+            wrap: false
+        });
+    </script>
+    <script id="cal5_src" type="application/javascript">
+        window.cal5 = new KalEl(document.getElementById('cal5'), {
+            onDateChanging: function(kalEl, oldDate, newDate) {
+                if(newDate > new Date()) {
+                    return true;
+                } else {
+                    return confirm('Select this very old date '
+                            + newDate.toLocaleString() + '?');
+                }
+            },
+            onDateChanged: function(kalEl, newDate) {
+                if(newDate <= new Date()) {
+                    alert('Ok, did it!');
+                }
+                this.value = newDate ? newDate.toLocaleString() : '';
+            }
+        });
+    </script>
+    <script id="cal6_src" type="application/javascript">
+        window.cal6 = new KalEl(document.getElementById('cal6'), {
+            visibility: 'manual'
+        });
+
+        document.getElementById('cal6_show').addEventListener('click',
+                function(event) {
+            window.cal6.show();
+            event.preventDefault();
+        });
+        document.getElementById('cal6_hide').addEventListener('click',
+                function(event) {
+            window.cal6.hide();
+            event.preventDefault();
+        });
+        document.getElementById('cal6_toggle').addEventListener('click',
+                function(event) {
+            window.cal6.toggle();
+            event.preventDefault();
+        });
+    </script>
+    <script type="application/javascript">
+        var codeEl, srcEl, src;
+        for(var idx = 1, max = 100; idx < max; idx++) {
+            codeEl = document.getElementById('cal' + idx + '_code');
+            srcEl = document.getElementById('cal' + idx + '_src');
+
+            if(codeEl && srcEl) {
+                src = srcEl.innerHTML;
+                src = src.replace(/\n/g, '\n</br>');
+                src = src.replace(/        /g, '');
+                src = src.trim().replace(/ /g, '&nbsp;');
+                src = src.replace(/^(<\/br>)|(<\/br>)$/g, '').trim();
+                codeEl.innerHTML = src;
+            };
+        }
+    </script>
   </body>
 </html>
