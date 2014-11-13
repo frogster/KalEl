@@ -15,7 +15,16 @@
     </header>
     <div class="content">
         <section>
-            <h2>KalEl with standard configuration</h2>
+            <h2>KalEl with standard calendar configuration</h2>
+            <div class="sample sample-fix">
+                <div class="sample-content">
+                    <div id="cal7"></div>
+                </div>
+                <code id="cal7_code"></code>
+            </div>
+        </section>
+        <section>
+            <h2>KalEl with standard picker configuration</h2>
             <div class="sample">
                 <div class="sample-content">
                     <input type="text" id="cal1" placeholder="Enter date and time ..."/>
@@ -83,6 +92,7 @@ window.cal1 = new KalEl(document.getElementById('cal1'));
 <script id="cal2_src" type="application/javascript">
 var date2 = new Date(2013, 0, 16, 1, 14, 15);
 window.cal2 = new KalEl(document.getElementById('cal2'), {
+    mode: 'picker',
     visibility: 'visible',
     value: date2,
     weekStartsOnSun: true
@@ -91,6 +101,7 @@ window.cal2 = new KalEl(document.getElementById('cal2'), {
 <script id="cal3_src" type="application/javascript">
 var date3 = new Date(2013, 4, 14, 5, 1, 45);
 window.cal3 = new KalEl(document.getElementById('cal3'), {
+    mode: 'picker',
     seconds: true,
     visibility: 'visible',
     value: date3
@@ -99,6 +110,7 @@ window.cal3 = new KalEl(document.getElementById('cal3'), {
 <script id="cal4_src" type="application/javascript">
 var date4 = new Date(2013, 4, 14, 5, 1, 45);
 window.cal4 = new KalEl(document.getElementById('cal4'), {
+    mode: 'picker',
     seconds: true,
     visibility: 'visible',
     value: date4,
@@ -107,6 +119,7 @@ window.cal4 = new KalEl(document.getElementById('cal4'), {
 </script>
 <script id="cal5_src" type="application/javascript">
 window.cal5 = new KalEl(document.getElementById('cal5'), {
+    mode: 'picker',
     onDateChanging: function(kalEl, oldDate, newDate) {
         if(newDate > new Date()) {
             return true;
@@ -124,6 +137,7 @@ window.cal5 = new KalEl(document.getElementById('cal5'), {
 </script>
 <script id="cal6_src" type="application/javascript">
 window.cal6 = new KalEl(document.getElementById('cal6'), {
+    mode: 'picker',
     visibility: 'manual'
 });
 
@@ -139,6 +153,11 @@ document.getElementById('cal6_toggle').addEventListener('click', function(event)
     window.cal6.toggle();
     event.preventDefault();
 });
+</script>
+<script id="cal7_src" type="application/javascript">
+    window.cal7 = new KalEl(document.getElementById('cal7'), {
+        //visibility:'visible'
+    });
 </script>
 <script type="application/javascript">
 	var codeEl, srcEl, src;

@@ -29,14 +29,14 @@ header {
 .content {
   padding: 10px;
   background-color: #FFF;
-  box-shadow: 0 0 1000px #333; }
+  box-shadow: 0 0 500px #333; }
 
 .sample {
   position: relative;
   display: block;
   padding-left: 250px; }
   .sample.sample-fix {
-    min-height: 220px; }
+    min-height: 250px; }
   .sample > .sample-content {
     position: absolute;
     left: 0;
