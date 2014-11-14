@@ -71,7 +71,7 @@
             //Called when the date has changed
             onDateChanged: function (kalEl, date) {
                 if (this.tagName.toUpperCase() === 'INPUT' && this.type.toUpperCase() === 'TEXT') {
-                    this.value = kalEl.params.formatDate(date);
+                    this.value = kalEl.params.formatDateTime(date);
                 }
             },
 
