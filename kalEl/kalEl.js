@@ -70,7 +70,9 @@
 
             //Called when the date has changed
             onDateChanged: function (kalEl, date) {
-                if (this.tagName.toUpperCase() === 'INPUT' && this.type.toUpperCase() === 'TEXT') this.value = kalEl.params.formatDate(date);
+                if (this.tagName.toUpperCase() === 'INPUT' && this.type.toUpperCase() === 'TEXT') {
+                    this.value = kalEl.params.formatDate(date);
+                }
             },
 
             parseDateString: function (dateString) {
@@ -78,8 +80,43 @@
             },
 
             formatDate: function (date) {
+                return date ? date.toLocaleDateString() : '';
+            },
+
+            formatTime: function (date) {
+                return date ? date.toLocaleTimeString() : '';
+            },
+
+            formatDateTime: function (date) {
                 return date ? date.toLocaleString() : '';
-            }
+            },
+
+            /**
+             * Array of event objects or function that returns an array of event objects
+             * Event object:
+             * {
+             *  id: 0
+             *  start: new Date(),
+             *  end: new Date(),
+             *  title: 'Event title'
+             * }
+             */
+            events: function(kalEl, start, end, addEvent) {
+              //return array or call addEvent async
+            },
+
+            /**
+             * Tru or false to enable or disable the default browser tooltip.
+             * Or provide a function to implement custom tooltips.
+             * @example
+             * function(kalEl, date, events) {
+             *      //show custom tooltip
+             * }
+             * @param kalEl
+             * @param date
+             * @param events
+             */
+            tooltip: true
         };
 
         params = this.params = extend(defaultParams, params);
@@ -459,9 +496,40 @@
 
             var str = '', css, current, selected = self.params.value, now = new Date();
 
+            var eventLoadStart = data.dates[0],
+                eventLoadEnd = getEndOfDay(data.dates[data.dates.length-1]);
+
+            var events = loadEvents(eventLoadStart, eventLoadEnd),
+                eventsForDate, eventIdsForDate = [], eventIdsForDateStr = '', titleStr = '';
+
             for (var idx = 0, max = data.dates.length; idx < max; idx++) {
                 current = data.dates[idx];
+                eventsForDate = filterEvents(events, current, getEndOfDay(current));
+                eventIdsForDate = [];
+                eventIdsForDateStr = '';
+                titleStr = '';
 
+                //Create event specific strings
+                if(eventsForDate.length > 0) {
+                    titleStr = params.formatDate(current);
+                    for(var eIdx = 0, eMax = eventsForDate.length; eIdx < eMax; eIdx++) {
+                        if(eventsForDate[eIdx].id){
+                            eventIdsForDate.push(eventsForDate[eIdx].id);
+                        }
+                        if(eventsForDate[eIdx].title){
+                            titleStr += '\r\n' + eventsForDate[eIdx].title + ' @' + params.formatDateTime(eventsForDate[eIdx].start);
+                        }
+                    }
+                    eventIdsForDateStr = ' data-event-ids="' + eventIdsForDate.join() + '"';
+                }
+
+                if(typeof params.tooltip === 'function' || params.tooltip === false) {
+                    titleStr = '';
+                } else if(titleStr.length > 0) {
+                    titleStr = ' title="' + titleStr + '"';
+                }
+
+                //Css Classes
                 if (idx < data.daysOffset - 1) {
                     css = 'pre';
                 }
@@ -475,10 +543,11 @@
                 if (selected && current.toDateString() === selected.toDateString()) css += ' active';
                 if (current.toDateString() === now.toDateString()) css += ' today';
 
-
+                //Create string
                 str += '' +
-                    '<button data-year="' + current.getFullYear() + '" data-month="' + current.getMonth() + '" data-date="' + current.getDate() + '" class="' + css + '" tabIndex="-1">' +
-                    current.getDate() +
+                    '<button' + titleStr + eventIdsForDateStr + ' data-year="' + current.getFullYear() + '" data-month="' + current.getMonth() + '" data-date="' + current.getDate() + '" class="' + css + '" tabIndex="-1">' +
+                    (eventsForDate.length > 0 ? '<i>' + eventsForDate.length + '</i>' : '') +
+                        current.getDate() +
                     '</button>';
             }
 
@@ -486,6 +555,7 @@
             var date = kalEl.getElementsByClassName('cal-body-date-day')[0],
                 dateItems = date.getElementsByTagName('button');
             removeEventListeners(dateItems, 'click', onDateItemsClick);
+            removeEventListeners(dateItems, 'mouseover', onDateItemsHover);
 
             //Replace HTML
             var daysEl = kalEl.getElementsByClassName('cal-body-date-day')[0];
@@ -496,6 +566,7 @@
             dateItems = date.getElementsByTagName('button');
 
             addEventListeners(dateItems, 'click', onDateItemsClick);
+            addEventListeners(dateItems, 'mouseover', onDateItemsHover);
         }
 
         function renderTime(hourOrDate, minute, second) {
@@ -621,6 +692,64 @@
                 addClass(kalEl, 'cal-visible');
         }
 
+
+
+        function filterEvents(eventObjArr, start, end) {
+            var current, arr = [];
+            for(var idx = 0, max = eventObjArr.length; idx < max; idx++) {
+                current = eventObjArr[idx];
+                if  (
+                    //Within start & end
+                    (current.start >= start && current.end <= end) ||
+                    //Starts earlier, ends within
+                    (current.start <= start && current.end <= end && current.end >= start) ||
+                    //Starts within, ends later
+                    (current.start >= start && current.start <= end && current.end >= end) ||
+                    //Starts earlier, ends later
+                    (current.start <= start && current.end >= end)
+                    )
+                {
+                    arr.push(current);
+                    continue;
+                }
+
+            }
+
+            return arr;
+        }
+
+        function addEvent(eventObj) {
+            throw 'Adding events async is not supported yet.'
+        }
+
+        function loadEvents(start, end) {
+            if(params.events) {
+                var events = params.events;
+
+                //A function was provided, so use this
+                if(typeof events === 'function') {
+                    var funRes = params.events.call(cbTarget, self, start, end, addEvent);
+                    //If the function returns nothing, we assume this is an async call and the function
+                    if(funRes !== undefined) {
+                        events = funRes;
+                    }
+                }
+
+                if(Object.prototype.toString.call(events) === '[object Array]')
+                {
+                    events.sort(function(a,b){
+                        return a - b;
+                    });
+                    return events;
+                }
+            }
+
+            return [];
+        }
+
+
+
+
         function onYearItemsClick() {
             display(this.getAttribute('data-year'));
             self.hideYears();
@@ -648,6 +777,16 @@
         };
         function onDateItemsClick() {
             self.select(this.getAttribute('data-year'), this.getAttribute('data-month'), this.getAttribute('data-date'));
+        };
+        function onDateItemsHover(ea) {
+            if(params.tooltip && (typeof params.tooltip === 'function')) {
+
+                var date = new Date(ea.target.getAttribute('data-year'), ea.target.getAttribute('data-month'), ea.target.getAttribute('data-date')),
+                    eventIds = [];
+
+                //Allow custom tooltips
+                params.tooltip.call(cbTarget, self, date, eventIds, ea);
+            }
         };
         function onFocusIn(ea) {
             var current = KalEl.current;
@@ -727,6 +866,7 @@
             var date = kalEl.getElementsByClassName('cal-body-date-day')[0],
                 dateItems = date.getElementsByTagName('button');
             removeEventListeners(dateItems, 'click', onDateItemsClick);
+            removeEventListeners(dateItems, 'mouseover', onDateItemsHover);
             removeEventListeners(yearItems, 'click', onYearItemsClick);
             removeEventListeners(monthItems, 'click', onMonthItemsClick);
             if(isPicker){
@@ -1190,7 +1330,6 @@
             for (var i = 0; i < elems.length; i++) {
                 var zindex = document.defaultView.getComputedStyle(elems[i], null).getPropertyValue("z-index");
                 if (elems[i].style.zIndex === 15) {
-                    debugger;
                     zindex = elems[i].style.zIndex;
                 }
                 if ((zindex > highest) && (zindex != 'auto')) {
@@ -1198,6 +1337,14 @@
                 }
             }
             return 1 + highest;
+        }
+
+        function getEndOfDay(date) {
+            var _date = new Date(date.getTime());
+            _date.setHours(23);
+            _date.setMinutes(59);
+            _date.setSeconds(59);
+            return _date;
         }
 
         //Expose dom elements

@@ -87,7 +87,9 @@
 </div>
 
 <script id="cal1_src" type="application/javascript">
-window.cal1 = new KalEl(document.getElementById('cal1'));
+window.cal1 = new KalEl(document.getElementById('cal1'), {
+    mode: 'picker'
+});
 </script>
 <script id="cal2_src" type="application/javascript">
 var date2 = new Date(2013, 0, 16, 1, 14, 15);
@@ -95,7 +97,11 @@ window.cal2 = new KalEl(document.getElementById('cal2'), {
     mode: 'picker',
     visibility: 'visible',
     value: date2,
-    weekStartsOnSun: true
+    weekStartsOnSun: true,
+    events: [
+            { id: 123, start: new Date(2013, 0, 14, 6, 15) , end: new Date(2013, 0, 19, 7, 30), title: 'Business Party'},
+            { id: 456, start: new Date(2013, 0, 18, 6, 15) , end: new Date(2013, 0, 19, 7, 30), title: 'Business Party'}
+        ]
 });
 </script>
 <script id="cal3_src" type="application/javascript">
@@ -156,7 +162,40 @@ document.getElementById('cal6_toggle').addEventListener('click', function(event)
 </script>
 <script id="cal7_src" type="application/javascript">
     window.cal7 = new KalEl(document.getElementById('cal7'), {
-        //visibility:'visible'
+        events: function() {
+            return;
+            var now = (new Date());
+            now.setSeconds(0);
+            now.setMinutes(0);
+
+            var start1 = now;
+            var end1 = (new Date(start1.getTime()));
+            end1.setHours(now.getHours()+1);
+
+            var start2a = (new Date(now.getTime()));
+            start2a.setDate(now.getDate()+3);
+            start2a.setMinutes(15);
+            var end2a = (new Date(start2a.getTime()));
+            end2a.setMinutes(start2a.getMinutes()+90);
+
+            var start2b = (new Date(end2a.getTime()));
+            start2b.setHours(start2b.getHours()+1);
+            var end2b = (new Date(start2b.getTime()));
+            end2b.setMinutes(start2b.getMinutes()+30);
+
+            var start3 = (new Date(now.getTime()));
+            start3.setDate(now.getDate()+7);
+            start3.setMinutes(30);
+            var end3 = (new Date(start3.getTime()));
+            end3.setMinutes(start3.getMinutes()+60);
+
+            return [
+                { id: 987, start: start1, end: end1, title: 'First Event'},
+                { id: 887, start: start2a, end: end2a, title: 'Second Event'},
+                { id: 113, start: start2b, end: end2b, title: 'Third Event'},
+                { id: 647, start: start3, end: end3, title: 'Fourth Event'}
+            ]
+        }
     });
 </script>
 <script type="application/javascript">

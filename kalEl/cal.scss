@@ -1,11 +1,15 @@
 $fontSizeBig: 14px;
 $fontSizeHuge: 18px;
 $fontSize: 12px;
+$fontSizeMini: 7px;
 
 $colBackground: #f9f9f9;
 $colForeground: #444;
 $colAccentBackground: #ae5bb3;
 $colAccentForeground: #FFFFFF;
+
+$colEventBubbleBackground: #5ad7c8;
+$colEventBubbleForeground: #356b5c;
 
 $colButtonHover: darken($colAccentBackground, 10%);
 $colButtonActive: darken($colAccentBackground, 20%);
@@ -246,6 +250,13 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       border: 0px solid transparent;
       box-shadow: none;
       outline: none;
+      position: relative;
+      i {
+        position: absolute;
+        background-color: $colEventBubbleBackground;
+        color: $colEventBubbleForeground;
+        font-style: normal;
+      }
       &:hover {
         color: $colAccentForeground;
         background-color: $colButtonHover;
@@ -436,6 +447,17 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       height:$itemSize;
       line-height: $itemSize;
       padding: 0;
+      i {
+        left: 0;
+        bottom: 0;
+        font-size: $fontSizeMini;
+        line-height: $fontSizeMini * 2;
+        width: $fontSizeMini * 2;
+        height: $fontSizeMini * 2;
+        border-radius: $fontSizeMini;
+        padding: 0;
+        margin: $fontSizeMini / 5;
+      }
       &.today {
         border-radius: $itemSize/2;
       }
@@ -661,6 +683,18 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       height:$itemSize;
       line-height: $itemSize;
       padding: 0;
+      i {
+        $iSize: $itemSize * 0.4;
+        left: 0;
+        bottom: 0;
+        font-size: $iSize * 0.75;
+        line-height: $iSize;
+        width: $iSize;
+        height: $iSize;
+        border-radius: $iSize/2 $iSize/2 $iSize/2 0;
+        padding: 0;
+        margin: 0;
+      }
       &.today {
         border-radius: $itemSize/2;
       }

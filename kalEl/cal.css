@@ -137,7 +137,13 @@
       background-color: transparent;
       border: 0px solid transparent;
       box-shadow: none;
-      outline: none; }
+      outline: none;
+      position: relative; }
+      .cal .cal-list > button i, .cal .cal-list > div > button i {
+        position: absolute;
+        background-color: #5ad7c8;
+        color: #356b5c;
+        font-style: normal; }
       .cal .cal-list > button:hover, .cal .cal-list > div > button:hover {
         color: #FFFFFF;
         background-color: #914596; }
@@ -294,6 +300,16 @@
       height: 34.28571px;
       line-height: 34.28571px;
       padding: 0; }
+      .cal.cal-mode-calendar .cal-list > button i, .cal.cal-mode-calendar .cal-list > div > button i {
+        left: 0;
+        bottom: 0;
+        font-size: 7px;
+        line-height: 14px;
+        width: 14px;
+        height: 14px;
+        border-radius: 7px;
+        padding: 0;
+        margin: 1.4px; }
       .cal.cal-mode-calendar .cal-list > button.today, .cal.cal-mode-calendar .cal-list > div > button.today {
         border-radius: 17.14286px; }
 
@@ -467,6 +483,16 @@
       height: 24px;
       line-height: 24px;
       padding: 0; }
+      .cal.cal-mode-picker .cal-list > button i, .cal.cal-mode-picker .cal-list > div > button i {
+        left: 0;
+        bottom: 0;
+        font-size: 7.2px;
+        line-height: 9.6px;
+        width: 9.6px;
+        height: 9.6px;
+        border-radius: 4.8px 4.8px 4.8px 0;
+        padding: 0;
+        margin: 0; }
       .cal.cal-mode-picker .cal-list > button.today, .cal.cal-mode-picker .cal-list > div > button.today {
         border-radius: 12px; }
   .cal.cal-mode-picker.cal-seconds-off .cal-body .cal-body-years .cal-list-head, .cal.cal-mode-picker.cal-seconds-off .cal-body .cal-body-time-hour .cal-list-head, .cal.cal-mode-picker.cal-seconds-off .cal-body .cal-body-time-minute .cal-list-head, .cal.cal-mode-picker.cal-seconds-off .cal-body .cal-body-time-second .cal-list-head {
