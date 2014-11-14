@@ -251,6 +251,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       box-shadow: none;
       outline: none;
       position: relative;
+      overflow: visible;
       i {
         position: absolute;
         background-color: $colEventBubbleBackground;

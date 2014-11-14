@@ -138,7 +138,8 @@
       border: 0px solid transparent;
       box-shadow: none;
       outline: none;
-      position: relative; }
+      position: relative;
+      overflow: visible; }
       .cal .cal-list > button i, .cal .cal-list > div > button i {
         position: absolute;
         background-color: #5ad7c8;
