@@ -417,7 +417,6 @@
 
             params.displayValue = newDate;
 
-
             newDate = newDate || new Date();
 
             var dateEl = kalEl.getElementsByClassName('cal-head-left')[0],
@@ -477,7 +476,7 @@
          * @param {Date|Number} yearOrDate
          * @param {Number} month
          */
-        function renderMonth(yearOrDate, month) {
+        function renderMonth(yearOrDate, month, events) {
 
             var year = yearOrDate,
                 day;
@@ -499,7 +498,8 @@
             var eventLoadStart = data.dates[0],
                 eventLoadEnd = getEndOfDay(data.dates[data.dates.length-1]);
 
-            var events = loadEvents(eventLoadStart, eventLoadEnd),
+            //If there were events provided within the call, use them.
+            var events = events || loadEvents(eventLoadStart, eventLoadEnd),
                 eventsForDate, eventIdsForDate = [], eventIdsForDateStr = '', titleStr = '';
 
             for (var idx = 0, max = data.dates.length; idx < max; idx++) {
@@ -556,6 +556,10 @@
                 dateItems = date.getElementsByTagName('button');
             removeEventListeners(dateItems, 'click', onDateItemsClick);
             removeEventListeners(dateItems, 'mouseover', onDateItemsHover);
+
+            //Set displayed range in params data
+            params.displayStart = new Date(eventLoadStart.getTime());
+            params.displayEnd = new Date(eventLoadEnd.getTime());
 
             //Replace HTML
             var daysEl = kalEl.getElementsByClassName('cal-body-date-day')[0];
@@ -718,8 +722,32 @@
             return arr;
         }
 
-        function addEvent(eventObj) {
-            throw 'Adding events async is not supported yet.'
+        /**
+         * Adds events to the currently display date range.
+         * @param {Object|[Object]} eventObj Event object or array of event objects to add to the current view.
+         */
+        function addEvents(events) {
+            if(!events) {
+                return;
+            }
+
+            //Always work with an array copy
+            if(Object.prototype.toString.call(events) !== '[object Array]') {
+                events = [events];
+            }
+            else
+            {
+                events = events.slice();
+            }
+
+            //filter only relevant events
+            events = filterEvents(events, params.displayStart, params.displayEnd);
+            if(events.length === 0) {
+                return;
+            }
+
+            //now re render the current month with the given events
+            renderMonth(null, null, events);
         }
 
         function loadEvents(start, end) {
@@ -728,7 +756,7 @@
 
                 //A function was provided, so use this
                 if(typeof events === 'function') {
-                    var funRes = params.events.call(cbTarget, self, start, end, addEvent);
+                    var funRes = params.events.call(cbTarget, self, new Date(start.getTime()), new Date(end.getTime()), addEvents);
                     //If the function returns nothing, we assume this is an async call and the function
                     if(funRes !== undefined) {
                         events = funRes;
@@ -746,8 +774,6 @@
 
             return [];
         }
-
-
 
 
         function onYearItemsClick() {

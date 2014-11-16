@@ -24,6 +24,15 @@
             </div>
         </section>
         <section>
+            <h2>KalEl with asynchronous event loading</h2>
+            <div class="sample sample-fix">
+                <div class="sample-content">
+                    <div id="cal8"></div>
+                </div>
+                <code id="cal8_code"></code>
+            </div>
+        </section>
+        <section>
             <h2>KalEl with standard picker configuration</h2>
             <div class="sample">
                 <div class="sample-content">
@@ -194,6 +203,39 @@ document.getElementById('cal6_toggle').addEventListener('click', function(event)
                 { id: 113, start: start2b, end: end2b, title: 'Third Event'},
                 { id: 647, start: start3, end: end3, title: 'Fourth Event'}
             ]
+        }
+    });
+</script>
+<script id="cal8_src" type="application/javascript">
+    window.cal8 = new KalEl(document.getElementById('cal8'), {
+        events: function(kalEl, start, end, addEvents) {
+            function _createRandomEvent() {
+                var hours = Math.floor((Math.random() * 30 * 24) + 1),
+                    duration = Math.floor((Math.random() * 72) + 1);
+
+                var eventStart = new Date(start.getTime());
+                eventStart.setHours(hours);
+                var eventEnd = new Date(eventStart.getTime());
+                eventEnd.setHours(eventEnd.getHours() + duration);
+
+                return {
+                    start: eventStart,
+                    end: eventEnd,
+                    title: 'My Event'
+                }
+            }
+            function _addSomeEvents() {
+                var arr = [];
+
+                for(var idx = 1, max = Math.floor((Math.random() * 10) + 1); idx < max; idx++) {
+                    arr.push(_createRandomEvent());
+                }
+
+                addEvents(arr);
+
+                console.log(arr);
+            }
+            window.setTimeout(_addSomeEvents, 2000);
         }
     });
 </script>

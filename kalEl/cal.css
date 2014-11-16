@@ -304,13 +304,13 @@
       .cal.cal-mode-calendar .cal-list > button i, .cal.cal-mode-calendar .cal-list > div > button i {
         left: 0;
         bottom: 0;
-        font-size: 7px;
-        line-height: 14px;
-        width: 14px;
-        height: 14px;
-        border-radius: 7px;
+        font-size: 10.28571px;
+        line-height: 13.71429px;
+        width: 13.71429px;
+        height: 13.71429px;
+        border-radius: 6.85714px;
         padding: 0;
-        margin: 1.4px; }
+        margin: 1.37143px; }
       .cal.cal-mode-calendar .cal-list > button.today, .cal.cal-mode-calendar .cal-list > div > button.today {
         border-radius: 17.14286px; }
 

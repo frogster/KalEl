@@ -1,7 +1,5 @@
 $fontSizeBig: 14px;
-$fontSizeHuge: 18px;
 $fontSize: 12px;
-$fontSizeMini: 7px;
 
 $colBackground: #f9f9f9;
 $colForeground: #444;
@@ -449,15 +447,16 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       line-height: $itemSize;
       padding: 0;
       i {
+        $iSize: $itemSize * 0.4;
         left: 0;
         bottom: 0;
-        font-size: $fontSizeMini;
-        line-height: $fontSizeMini * 2;
-        width: $fontSizeMini * 2;
-        height: $fontSizeMini * 2;
-        border-radius: $fontSizeMini;
+        font-size: $iSize * 0.75;
+        line-height: $iSize;
+        width: $iSize;
+        height: $iSize;
+        border-radius: $iSize/2;
         padding: 0;
-        margin: $fontSizeMini / 5;
+        margin: $iSize/10;
       }
       &.today {
         border-radius: $itemSize/2;
