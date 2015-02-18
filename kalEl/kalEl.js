@@ -829,6 +829,9 @@
             ea.stopPropagation();
         };
         function onWindowFocusIn(ea) {
+			if(ea.relatedTarget === self.kal) {
+				return;
+			}
             if (self.params.visibility === 'auto' || (self.params.visibility === 'manual' && self.params.hideOnLostFocus)) {
                 self.hide();
             }
