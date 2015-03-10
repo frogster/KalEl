@@ -1,0 +1,26 @@
+{
+    "name": "KalEl",
+    "version": "0.1.0",
+    "main": "kalEl/kalEl.min.js",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:frogster/KalEl.git"
+    },
+    "homepage": "https://github.com/frogster/KalEl",
+    "authors": [
+        "Martin Liboswar (https://github.com/frogster/)"
+    ],
+    "description": "A date and time picker in plain JavaScript. No dependecy.",
+    "keywords": [
+        "date",
+        "time",
+        "datetime",
+        "picker",
+        "javascript",
+        "ecmascript"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*"
+    ]
+}
