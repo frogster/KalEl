@@ -417,7 +417,6 @@
                 if (!params.seconds) newDate.setSeconds(0);
             }
 
-            debugger;
             params.displayValue = newDate;
 
             newDate = newDate || new Date();
