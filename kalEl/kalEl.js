@@ -11,7 +11,7 @@
             weekStartsOnSun: false,
 
             //Maintains the selected date
-            value: element.value ? this.parseDateString(element.value) : null,
+            value: null,
 
             //Maintains the currently displayed date
             displayValue: Date.parse(element.value),
@@ -102,7 +102,7 @@
              * }
              */
             events: function(kalEl, start, end, addEvent) {
-              //return array or call addEvent async
+                //return array or call addEvent async
             },
 
             /**
@@ -118,6 +118,8 @@
              */
             tooltip: true
         };
+
+        defaultParams.value = element.value ? defaultParams.parseDateString(element.value) : null
 
         params = this.params = extend(defaultParams, params);
 
@@ -302,7 +304,7 @@
             }
 
             function prepare() {
-                var _base = params.displayValue ? new Date(params.displayValue.getTime()) : new Date();
+                var _base = params.displayValue && params.displayValue.getTime ? new Date(params.displayValue.getTime()) : new Date();
                 var action, anythingProcessed;
 
                 if (resolveAction(yearOrDate)) {
@@ -415,6 +417,7 @@
                 if (!params.seconds) newDate.setSeconds(0);
             }
 
+            debugger;
             params.displayValue = newDate;
 
             newDate = newDate || new Date();
@@ -547,7 +550,7 @@
                 str += '' +
                     '<button' + titleStr + eventIdsForDateStr + ' data-year="' + current.getFullYear() + '" data-month="' + current.getMonth() + '" data-date="' + current.getDate() + '" class="' + css + '" tabIndex="-1">' +
                     (eventsForDate.length > 0 ? '<i>' + eventsForDate.length + '</i>' : '') +
-                        current.getDate() +
+                    current.getDate() +
                     '</button>';
             }
 
@@ -659,28 +662,28 @@
                 '       <div class="cal-list cal-body-date-day"></div>' +
                 '   </div>' +
                 (params.mode === 'picker' ?
-                    '   <div class="cal-list cal-body-time-hour">' +
-                    '       <div class="cal-list-head"></div>' +
-                    '       <div class="cal-list-head-cancel">☓</div>' +
-                    '       <div class="cal-column">' +
-                    statics.hours +
-                    '       </div>' +
-                    '   </div>' +
-                    '   <div class="cal-list cal-body-time-minute">' +
-                    '       <div class="cal-list-head"></div>' +
-                    '       <div class="cal-list-head-cancel">☓</div>' +
-                    '       <div class="cal-column">' +
-                    statics.minutes +
-                    '       </div>' +
-                    '   </div>' +
-                    (params.seconds ?
-                        '   <div class="cal-list cal-body-time-second">' +
-                        '       <div class="cal-list-head"></div>' +
-                        '       <div class="cal-list-head-cancel">☓</div>' +
-                        '       <div class="cal-column">' +
-                        statics.seconds +
-                        '       </div>' +
-                        '   </div>' : '' ) : '') +
+                '   <div class="cal-list cal-body-time-hour">' +
+                '       <div class="cal-list-head"></div>' +
+                '       <div class="cal-list-head-cancel">☓</div>' +
+                '       <div class="cal-column">' +
+                statics.hours +
+                '       </div>' +
+                '   </div>' +
+                '   <div class="cal-list cal-body-time-minute">' +
+                '       <div class="cal-list-head"></div>' +
+                '       <div class="cal-list-head-cancel">☓</div>' +
+                '       <div class="cal-column">' +
+                statics.minutes +
+                '       </div>' +
+                '   </div>' +
+                (params.seconds ?
+                '   <div class="cal-list cal-body-time-second">' +
+                '       <div class="cal-list-head"></div>' +
+                '       <div class="cal-list-head-cancel">☓</div>' +
+                '       <div class="cal-column">' +
+                statics.seconds +
+                '       </div>' +
+                '   </div>' : '' ) : '') +
 
                 '   <div class="cal-list cal-body-months">' + statics.monthsShort + '</div>' +
                 (params.mode === 'picker' ?
@@ -704,14 +707,14 @@
                 current = eventObjArr[idx];
                 if  (
                     //Within start & end
-                    (current.start >= start && current.end <= end) ||
-                    //Starts earlier, ends within
-                    (current.start <= start && current.end <= end && current.end >= start) ||
-                    //Starts within, ends later
-                    (current.start >= start && current.start <= end && current.end >= end) ||
-                    //Starts earlier, ends later
-                    (current.start <= start && current.end >= end)
-                    )
+                (current.start >= start && current.end <= end) ||
+                //Starts earlier, ends within
+                (current.start <= start && current.end <= end && current.end >= start) ||
+                //Starts within, ends later
+                (current.start >= start && current.start <= end && current.end >= end) ||
+                //Starts earlier, ends later
+                (current.start <= start && current.end >= end)
+                )
                 {
                     arr.push(current);
                     continue;
@@ -829,9 +832,9 @@
             ea.stopPropagation();
         };
         function onWindowFocusIn(ea) {
-			if(ea.relatedTarget === self.kal) {
-				return;
-			}
+            if(ea.relatedTarget === self.kal) {
+                return;
+            }
             if (self.params.visibility === 'auto' || (self.params.visibility === 'manual' && self.params.hideOnLostFocus)) {
                 self.hide();
             }
