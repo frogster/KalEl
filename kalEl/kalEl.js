@@ -19,7 +19,7 @@
             //Defines if to use seconds or not
             seconds: false,
 
-            dates: false,
+            dates: true,
             times: true,
 
             /**
