@@ -294,7 +294,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   transition: width 150ms;
 }
 
-@mixin cal-mode-calendar($calWidth: 240px, $itemHeaderSize: 18px, $headerHeight:28px, $calPadding: 5px) {
+@mixin cal-display-mode-calendar($calWidth: 240px, $itemHeaderSize: 18px, $headerHeight:28px, $calPadding: 5px) {
   $itemSize: $calWidth / 7;
   $calContentHeight: $itemSize*6 + $itemHeaderSize;
   $calHeight: $calContentHeight + $headerHeight;
@@ -435,7 +435,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       > .cal-offset-6, > .cal-offset-6,
       > .cal-offset-7, > .cal-offset-7,
       > .cal-offset-8, > .cal-offset-8,
-      > .cal-offset-9, > .cal-offset-9,
+      > .cal-offset-9, > .cal-offset-9
       {
         left:0;
       }
@@ -471,7 +471,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   }
 }
 
-@mixin cal-mode-picker($calWidth: 240px, $itemHeaderSize: 18px, $headerHeight:28px, $calPadding: 5px) {
+@mixin cal-display-mode-picker($calWidth: 240px, $itemHeaderSize: 18px, $headerHeight:28px, $calPadding: 5px) {
   $itemSize:$calWidth/10;
   $calContentHeight: $itemSize*6 + $itemHeaderSize;
   $calHeight: $calContentHeight + $headerHeight;
@@ -672,7 +672,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
       > .cal-offset-6, > .cal-offset-6,
       > .cal-offset-7, > .cal-offset-7,
       > .cal-offset-8, > .cal-offset-8,
-      > .cal-offset-9, > .cal-offset-9,
+      > .cal-offset-9, > .cal-offset-9
       {
         left:0;
       }
@@ -813,10 +813,26 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   }
 }
 
-.cal.cal-mode-calendar {
-  @include cal-mode-calendar();
+.cal.cal-display-mode-calendar {
+  &.cal-mode-time {
+    @include cal-display-mode-calendar($headerHeight:0px);
+    box-shadow: none;
+    background-color: transparent;
+    > div {
+      box-shadow: 0px 2px 5px -2px #444;
+    }
+  }
+  @include cal-display-mode-calendar();
 }
 
-.cal.cal-mode-picker {
-  @include cal-mode-picker();
+.cal.cal-display-mode-picker {
+  &.cal-mode-time {
+    @include cal-display-mode-picker($headerHeight:0px);
+    box-shadow: none;
+    background-color: transparent;
+    > div {
+      box-shadow: 0px 2px 5px -2px #444;
+    }
+  }
+  @include cal-display-mode-picker();
 }

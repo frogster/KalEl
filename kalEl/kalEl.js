@@ -19,6 +19,9 @@
             //Defines if to use seconds or not
             seconds: false,
 
+            dates: false,
+            times: true,
+
             /**
              * Operation mode: ['calendar', 'picker']
              */
@@ -424,8 +427,8 @@
             var dateEl = kalEl.getElementsByClassName('cal-head-left')[0],
                 yearEl = kalEl.getElementsByClassName('cal-head-right')[0];
 
-            dateEl.innerText = params.monthNames[newDate.getMonth()];
-            yearEl.innerText = newDate.getFullYear();
+            if(dateEl) dateEl.innerText = params.monthNames[newDate.getMonth()];
+            if(yearEl) yearEl.innerText = newDate.getFullYear();
 
             var item;
             for (var idx = 0, max = yearItems.length; idx < max; idx++) {
@@ -479,6 +482,8 @@
          * @param {Number} month
          */
         function renderMonth(yearOrDate, month, events) {
+            if(!params.dates) return;
+
 
             var year = yearOrDate,
                 day;
@@ -631,7 +636,6 @@
                 }
             }
 
-
             //kalElWrap = params.wrap || document.createElement('span');
             addClass(kalElWrap, 'cal-wrap');
             //kalElWrap.setAttribute('class', 'cal-wrap');
@@ -640,27 +644,41 @@
             kalEl = document.createElement('div');
             //kalEl.setAttribute('class', 'cal' + (params.seconds ? ' seconds' : ''));
             addClass(kalEl, 'cal ' + (params.seconds === false ? 'cal-seconds-off' : ''));
-            addClass(kalEl, 'cal-mode-' + params.mode);
-            if(params.className) {
-                addClass(kalEl, params.className);
+            addClass(kalEl, 'cal-display-mode-' + params.mode);
+            if(params.dates && params.times) {
+                addClass(kalEl, 'cal-mode-datetime');
+            } else if (params.dates) {
+                addClass(kalEl, 'cal-mode-date');
+            } else if (params.times) {
+                addClass(kalEl, 'cal-mode-time');
             }
+            if(params.className) addClass(kalEl, params.className);
             /*if(['auto', 'manual'].indexOf(params.visibility) > -1)
              kalEl.setAttribute('style', 'display:none;');*/
 
             var statics = getStaticHtmlValues();
 
-            var html = '' +
-                '<div class="cal-head">' +
-                '   <div class="cal-head-left"></div>' +
-                '   <div class="cal-head-pager"><span class="cal-head-pager-prev">◄</span><span class="cal-head-pager-now">●</span><span class="cal-head-pager-next">►</span></div>' +
-                '   <div class="cal-head-right"></div>' +
-                '</div>' +
-                '<div class="cal-body">' +
-                '   <div class="cal-body-date">' +
-                '       <div class="cal-list-head">' + statics.dayListShort + '</div>' +
-                '       <div class="cal-list cal-body-date-day"></div>' +
-                '   </div>' +
-                (params.mode === 'picker' ?
+            var html = '';
+
+            if(params.dates) {
+                html +=
+                    '<div class="cal-head">' +
+                    '   <div class="cal-head-left"></div>' +
+                    '   <div class="cal-head-pager"><span class="cal-head-pager-prev">◄</span><span class="cal-head-pager-now">●</span><span class="cal-head-pager-next">►</span></div>' +
+                    '   <div class="cal-head-right"></div>' +
+                    '</div>';
+            }
+
+            html += '<div class="cal-body">';
+
+            if(params.dates) {
+                html += '<div class="cal-body-date">' +
+                    '       <div class="cal-list-head">' + statics.dayListShort + '</div>' +
+                    '       <div class="cal-list cal-body-date-day"></div>' +
+                    '   </div>';
+            }
+
+            html += (params.mode === 'picker' ?
                 '   <div class="cal-list cal-body-time-hour">' +
                 '       <div class="cal-list-head"></div>' +
                 '       <div class="cal-list-head-cancel">☓</div>' +
@@ -684,8 +702,8 @@
                 '       </div>' +
                 '   </div>' : '' ) : '') +
 
-                '   <div class="cal-list cal-body-months">' + statics.monthsShort + '</div>' +
-                (params.mode === 'picker' ?
+                '   <div class="cal-list cal-body-months">' + statics.monthsShort + '</div>';
+            html += (params.mode === 'picker' && params.dates ?
                     '   <div class="cal-list cal-body-time"></div>' : '') +
                 '   <div class="cal-list cal-body-years">' + statics.years + '</div>' +
                 '</div>';
@@ -856,20 +874,16 @@
                 addEventListeners(minuteItems, 'click', onMinuteItemsClick);
             }
 
-            if(isPicker){
-                timeDisplayEl.addEventListener('click', enableTimeSelector);
-            }
-            yearHeaderEl.addEventListener('click', toggleYears);
-            monthHeaderEl.addEventListener('click', toggleMonths);
+            if(timeDisplayEl) timeDisplayEl.addEventListener('click', enableTimeSelector);
+            if(yearHeaderEl) yearHeaderEl.addEventListener('click', toggleYears);
+            if(monthHeaderEl) monthHeaderEl.addEventListener('click', toggleMonths);
 
-            if(isPicker) {
-                hourHeadEl.addEventListener('click', showHourSelector);
-                minuteHeadEl.addEventListener('click', showMinuteSelector);
-            }
+            if(hourHeadEl) hourHeadEl.addEventListener('click', showHourSelector);
+            if(minuteHeadEl) minuteHeadEl.addEventListener('click', showMinuteSelector);
 
-            pagerPrevEl.addEventListener('click', displayPrevMonth);
-            pagerNextEl.addEventListener('click', displayNextMonth);
-            pagerNowEl.addEventListener('click', displayNow);
+            if(pagerPrevEl) pagerPrevEl.addEventListener('click', displayPrevMonth);
+            if(pagerNextEl) pagerNextEl.addEventListener('click', displayNextMonth);
+            if(pagerNowEl) pagerNowEl.addEventListener('click', displayNow);
 
             if (kal.tagName.toUpperCase() === 'INPUT' && kal.type.toUpperCase() === 'TEXT') {
                 kal.addEventListener('change', function () {
@@ -998,11 +1012,11 @@
             hideMonths();
             hideYears();
             showHourSelector();
-            timeDisplayEl.style.display = 'none';
+            if(timeDisplayEl) timeDisplayEl.style.display = 'none';
         }
 
         function disableTimeSelector() {
-            timeDisplayEl.style.display = 'block';
+            if(timeDisplayEl) timeDisplayEl.style.display = 'block';
 
             removeClass(hour, 'in out');
             removeClass(minute, 'in out');
