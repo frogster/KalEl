@@ -909,29 +909,30 @@
             kalElWrap.removeEventListener('mouseup', onWindowFocusIn);
 
             var date = kalEl.getElementsByClassName('cal-body-date-day')[0],
-                dateItems = date.getElementsByTagName('button');
-            removeEventListeners(dateItems, 'click', onDateItemsClick);
-            removeEventListeners(dateItems, 'mouseover', onDateItemsHover);
-            removeEventListeners(yearItems, 'click', onYearItemsClick);
-            removeEventListeners(monthItems, 'click', onMonthItemsClick);
+                dateItems = !date ? null : date.getElementsByTagName('button');
+
+            if(dateItems) removeEventListeners(dateItems, 'click', onDateItemsClick);
+            if(dateItems) removeEventListeners(dateItems, 'mouseover', onDateItemsHover);
+            if(yearItems) removeEventListeners(yearItems, 'click', onYearItemsClick);
+            if(monthItems) removeEventListeners(monthItems, 'click', onMonthItemsClick);
             if(isPicker){
                 removeEventListeners(cancelTimeSelElements, 'click', disableTimeSelector);
                 removeEventListeners(hourItems, 'click', onHourItemsClick);
                 removeEventListeners(minuteItems, 'click', onMinuteItemsClick);
             }
 
-            timeDisplayEl.removeEventListener('click', enableTimeSelector);
-            yearHeaderEl.removeEventListener('click', toggleYears);
-            monthHeaderEl.removeEventListener('click', toggleMonths);
+            if(timeDisplayEl) timeDisplayEl.removeEventListener('click', enableTimeSelector);
+            if(yearHeaderEl) yearHeaderEl.removeEventListener('click', toggleYears);
+            if(monthHeaderEl) monthHeaderEl.removeEventListener('click', toggleMonths);
 
             if(isPicker){
                 hourHeadEl.removeEventListener('click', showHourSelector);
                 minuteHeadEl.removeEventListener('click', showMinuteSelector);
             }
 
-            pagerPrevEl.removeEventListener('click', displayPrevMonth);
-            pagerNextEl.removeEventListener('click', displayNextMonth);
-            pagerNowEl.removeEventListener('click', displayNow);
+            if(pagerPrevEl) pagerPrevEl.removeEventListener('click', displayPrevMonth);
+            if(pagerNextEl) pagerNextEl.removeEventListener('click', displayNextMonth);
+            if(pagerNowEl) pagerNowEl.removeEventListener('click', displayNow);
 
             if (secondItems) {
                 removeEventListeners(secondItems, 'click', onSecondItemsClick);
