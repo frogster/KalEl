@@ -742,6 +742,44 @@
       left: 0; }
     .cal.cal-display-mode-picker.cal-mode-time.cal-seconds-off.in > .cal-list-head, .cal.cal-display-mode-picker.cal-mode-time.cal-seconds-off.out > .cal-list-head {
       width: auto; }
+    .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date {
+      height: 223.71429px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date.cal-visible.cal-visible-above {
+        top: -223.71429px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-body .cal-body-date, .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-body .cal-body-months {
+        right: 0; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-body .cal-list-head > ul > li {
+        width: 34.28571px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-1 {
+        left: -34.28571px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-2 {
+        left: -68.57143px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-3 {
+        left: -102.85714px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-4 {
+        left: -137.14286px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-5 {
+        left: -171.42857px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-6 {
+        left: -205.71429px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-7 {
+        left: -240px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-8 {
+        left: -274.28571px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > .cal-offset-9 {
+        left: -308.57143px; }
+      .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > button, .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > div > button {
+        width: 34.28571px;
+        height: 34.28571px;
+        line-height: 34.28571px; }
+        .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > button i, .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > div > button i {
+          font-size: 10.28571px;
+          line-height: 13.71429px;
+          width: 13.71429px;
+          height: 13.71429px;
+          border-radius: 6.85714px 6.85714px 6.85714px 0; }
+        .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > button.today, .cal.cal-display-mode-picker.cal-mode-time.cal-mode-date .cal-list > div > button.today {
+          border-radius: 17.14286px; }
     .cal.cal-display-mode-picker.cal-mode-time > div {
       box-shadow: 0px 2px 5px -2px #444; }
   .cal.cal-display-mode-picker .cal-head {
@@ -1011,5 +1049,43 @@
     left: 0; }
   .cal.cal-display-mode-picker.cal-seconds-off.in > .cal-list-head, .cal.cal-display-mode-picker.cal-seconds-off.out > .cal-list-head {
     width: auto; }
+  .cal.cal-display-mode-picker.cal-mode-date {
+    height: 251.71429px; }
+    .cal.cal-display-mode-picker.cal-mode-date.cal-visible.cal-visible-above {
+      top: -251.71429px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-body .cal-body-date, .cal.cal-display-mode-picker.cal-mode-date .cal-body .cal-body-months {
+      right: 0; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-body .cal-list-head > ul > li {
+      width: 34.28571px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-1 {
+      left: -34.28571px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-2 {
+      left: -68.57143px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-3 {
+      left: -102.85714px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-4 {
+      left: -137.14286px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-5 {
+      left: -171.42857px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-6 {
+      left: -205.71429px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-7 {
+      left: -240px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-8 {
+      left: -274.28571px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > .cal-offset-9 {
+      left: -308.57143px; }
+    .cal.cal-display-mode-picker.cal-mode-date .cal-list > button, .cal.cal-display-mode-picker.cal-mode-date .cal-list > div > button {
+      width: 34.28571px;
+      height: 34.28571px;
+      line-height: 34.28571px; }
+      .cal.cal-display-mode-picker.cal-mode-date .cal-list > button i, .cal.cal-display-mode-picker.cal-mode-date .cal-list > div > button i {
+        font-size: 10.28571px;
+        line-height: 13.71429px;
+        width: 13.71429px;
+        height: 13.71429px;
+        border-radius: 6.85714px 6.85714px 6.85714px 0; }
+      .cal.cal-display-mode-picker.cal-mode-date .cal-list > button.today, .cal.cal-display-mode-picker.cal-mode-date .cal-list > div > button.today {
+        border-radius: 17.14286px; }
 
 /*# sourceMappingURL=cal.css.map */

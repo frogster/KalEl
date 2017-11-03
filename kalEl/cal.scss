@@ -86,7 +86,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   }
 
   .cal-body {
-    position:absolute;
+    position: absolute;
     .cal-body-date, .cal-body-months {
       position: absolute;
       background-color: $colBackground;
@@ -484,15 +484,15 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   position: absolute;
 
   right: 0;
-  width:$calWidth;
-  height:$calHeight;
+  width: $calWidth;
+  height: $calHeight;
 
   font-size: $fontSize;
 
   box-shadow: 0px 2px 5px -2px $colForeground;
 
   .cal-head {
-    height:$headerHeight;
+    height: $headerHeight;
     font-size: $fontSizeBig;
     .cal-head-left, .cal-head-pager, .cal-head-right {
       line-height: $headerHeight;
@@ -528,7 +528,7 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
   }
 
   .cal-body {
-    top:$headerHeight;
+    top: $headerHeight;
     bottom: 0;
     right: 0;
     left: 0;
@@ -809,6 +809,76 @@ $colPagerButtonActive: darken($colHeaderBackground, 7%);
 
     &.in > .cal-list-head, &.out > .cal-list-head {
       width:auto;
+    }
+  }
+
+  &.cal-mode-date {
+    $itemSize:$calWidth/7;
+    $calContentHeight: $itemSize*6 + $itemHeaderSize;
+    $calHeight: $calContentHeight + $headerHeight;
+
+    height: $calHeight;
+    &.cal-visible.cal-visible-above {
+      top: -$calHeight;
+    }
+
+    .cal-body {
+      .cal-body-date, .cal-body-months {
+        right: 0;
+      }
+      .cal-list-head {
+        > ul {
+          > li {
+            width: $itemSize;
+          }
+        }
+      }
+    }
+    .cal-list {
+      > .cal-offset-1 {
+        left: -1 * $itemSize;
+      }
+      > .cal-offset-2 {
+        left: -2 * $itemSize;
+      }
+      > .cal-offset-3 {
+        left: -3 * $itemSize;
+      }
+      > .cal-offset-4 {
+        left: -4 * $itemSize;
+      }
+      > .cal-offset-5 {
+        left: -5 * $itemSize;
+      }
+      > .cal-offset-6 {
+        left: -6 * $itemSize;
+      }
+      > .cal-offset-7 {
+        left: -7 * $itemSize;
+      }
+      > .cal-offset-8 {
+        left: -8 * $itemSize;
+      }
+      > .cal-offset-9 {
+        left: -9 * $itemSize;
+      }
+
+      > button, > div > button {
+        width: $itemSize;
+        height: $itemSize;
+        line-height: $itemSize;
+        i {
+          $iSize: $itemSize * 0.4;
+          font-size: $iSize * 0.75;
+          line-height: $iSize;
+          width: $iSize;
+          height: $iSize;
+          border-radius: $iSize/2 $iSize/2 $iSize/2 0;
+        }
+        &.today {
+          border-radius: $itemSize/2;
+        }
+      }
     }
   }
 }

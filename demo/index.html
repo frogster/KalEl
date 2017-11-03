@@ -15,6 +15,15 @@
     </header>
     <div class="content">
         <section>
+            <h2>Date Mode</h2>
+            <div class="sample">
+                <div class="sample-content">
+                    <input type="text" id="cal9" placeholder="Enter date and time ..."/>
+                </div>
+                <code id="cal9_code"></code>
+            </div>
+        </section>
+        <section>
             <h2>KalEl with standard calendar configuration</h2>
             <div class="sample sample-fix">
                 <div class="sample-content">
@@ -95,7 +104,7 @@
     <footer></footer>
 </div>
 
-<script id="cal1_src" type="application/javascript">
+<!--<script id="cal1_src" type="application/javascript">
 window.cal1 = new KalEl(document.getElementById('cal1'), {
     mode: 'picker'
 });
@@ -237,6 +246,12 @@ document.getElementById('cal6_toggle').addEventListener('click', function(event)
             }
             window.setTimeout(_addSomeEvents, 2000);
         }
+    });
+</script>-->
+<script id="cal9_src" type="application/javascript">
+    window.cal9 = new KalEl(document.getElementById('cal9'), {
+        times: false,
+        mode: 'picker'
     });
 </script>
 <script type="application/javascript">

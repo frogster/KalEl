@@ -171,9 +171,9 @@
             pagerNowEl = kalEl.getElementsByClassName('cal-head-pager-now')[0],
             pagerNextEl = kalEl.getElementsByClassName('cal-head-pager-next')[0];
 
-        var hourHeadEl = isPicker ? hour.getElementsByClassName('cal-list-head')[0] : null,
-            minuteHeadEl = isPicker ? minute.getElementsByClassName('cal-list-head')[0] : null,
-            secondHeadEl = isPicker && params.seconds ? second.getElementsByClassName('cal-list-head')[0] : null;
+        var hourHeadEl = hour ? hour.getElementsByClassName('cal-list-head')[0] : null,
+            minuteHeadEl = minute ? minute.getElementsByClassName('cal-list-head')[0] : null,
+            secondHeadEl = second ? second.getElementsByClassName('cal-list-head')[0] : null;
 
         var cancelTimeSelElements = kalEl.getElementsByClassName('cal-list-head-cancel');
 
@@ -484,7 +484,6 @@
         function renderMonth(yearOrDate, month, events) {
             if(!params.dates) return;
 
-
             var year = yearOrDate,
                 day;
             if (yearOrDate && yearOrDate.getDate) {
@@ -597,9 +596,9 @@
                 date = new Date(hourOrDate, minute, second);
             }
 
-            if (hour != null && hour != undefined) checkActive(hourItems, 4, hour);
-            if (minute != null && minute != undefined) checkActive(minuteItems, 10, minute);
-            if (params.seconds && second != null && second != undefined) checkActive(secondItems, 10, second);
+            if (hourItems && hour != null && hour != undefined) checkActive(hourItems, 4, hour);
+            if (minuteItems && minute != null && minute != undefined) checkActive(minuteItems, 10, minute);
+            if (secondItems && params.seconds && second != null && second != undefined) checkActive(secondItems, 10, second);
 
             //timeDisplayEl.innerHTML = date.toLocaleTimeString();
             //timeDisplayEl.innerHTML = padLeft(hour, 2) + ':' + padLeft(minute, 2) + ':' + padLeft(second, 2);
@@ -678,7 +677,7 @@
                     '   </div>';
             }
 
-            html += (params.mode === 'picker' ?
+            html += (params.mode === 'picker' && params.times ?
                 '   <div class="cal-list cal-body-time-hour">' +
                 '       <div class="cal-list-head"></div>' +
                 '       <div class="cal-list-head-cancel">☓</div>' +
@@ -703,7 +702,10 @@
                 '   </div>' : '' ) : '') +
 
                 '   <div class="cal-list cal-body-months">' + statics.monthsShort + '</div>';
-            html += (params.mode === 'picker' && params.dates ?
+
+            //console.log(params.mode === 'picker' && params.times);
+
+            html += (params.mode === 'picker' && params.times ?
                     '   <div class="cal-list cal-body-time"></div>' : '') +
                 '   <div class="cal-list cal-body-years">' + statics.years + '</div>' +
                 '</div>';
@@ -946,28 +948,24 @@
         function setTimeListHeader(which) {
             switch (which) {
                 case 'hour':
-                    hourHeadEl.innerHTML = params.labels[0];
-                    minuteHeadEl.innerHTML = params.labelsShort[1];
-                    if (params.seconds)
-                        secondHeadEl.innerHTML = params.labelsShort[2];
+                    if(hourHeadEl) hourHeadEl.innerHTML = params.labels[0];
+                    if(minuteHeadEl) minuteHeadEl.innerHTML = params.labelsShort[1];
+                    if (params.seconds) secondHeadEl.innerHTML = params.labelsShort[2];
                     break;
                 case 'minute':
-                    hourHeadEl.innerHTML = params.labels[0];
-                    minuteHeadEl.innerHTML = params.labels[1];
-                    if (params.seconds)
-                        secondHeadEl.innerHTML = params.labelsShort[2];
+                    if(hourHeadEl) hourHeadEl.innerHTML = params.labels[0];
+                    if(minuteHeadEl) minuteHeadEl.innerHTML = params.labels[1];
+                    if (params.seconds) secondHeadEl.innerHTML = params.labelsShort[2];
                     break;
                 case 'second':
-                    hourHeadEl.innerHTML = params.labels[0];
-                    minuteHeadEl.innerHTML = params.labels[1];
-                    if (params.seconds)
-                        secondHeadEl.innerHTML = params.labels[2];
+                    if(hourHeadEl) hourHeadEl.innerHTML = params.labels[0];
+                    if(minuteHeadEl) minuteHeadEl.innerHTML = params.labels[1];
+                    if (params.seconds) secondHeadEl.innerHTML = params.labels[2];
                     break;
                 default:
-                    hourHeadEl.innerHTML = params.labelsShort[0];
-                    minuteHeadEl.innerHTML = params.labelsShort[1];
-                    if (params.seconds)
-                        secondHeadEl.innerHTML = params.labelsShort[2];
+                    if(hourHeadEl) hourHeadEl.innerHTML = params.labelsShort[0];
+                    if(minuteHeadEl) minuteHeadEl.innerHTML = params.labelsShort[1];
+                    if (params.seconds) secondHeadEl.innerHTML = params.labelsShort[2];
                     break;
             }
         }
@@ -1019,9 +1017,9 @@
         function disableTimeSelector() {
             if(timeDisplayEl) timeDisplayEl.style.display = 'block';
 
-            removeClass(hour, 'in out');
-            removeClass(minute, 'in out');
-            if (params.seconds) removeClass(second, 'in out');
+            if (hour) removeClass(hour, 'in out');
+            if (minute) removeClass(minute, 'in out');
+            if (second) removeClass(second, 'in out');
 
             setTimeListHeader('none');
         }
@@ -1040,7 +1038,34 @@
          */
         function show() {
             KalEl.current = self;
+
             addClass(self.kalEl, 'cal-visible');
+
+            if(self.params.mode === 'picker') {
+                var kalBoundingRect = self.kal.getBoundingClientRect();
+                var kalElBoundingRect = self.kalEl.getBoundingClientRect();
+                var kalElWrapBoundingRect = (self.kalElWrap || self.kal).getBoundingClientRect();
+                var viewPortHeight = window.innerHeight || document.documentElement.clientHeight;
+
+                var enoughPlaceBelow = viewPortHeight - kalBoundingRect.bottom - kalElBoundingRect.height >= 0;
+                var enoughPlaceAbove = kalBoundingRect.top - kalElBoundingRect.height >= 0;
+
+                // determine if there's enough space below editor
+                if(!enoughPlaceBelow && enoughPlaceAbove)
+                {
+                    //ok or no place above
+                    addClass(self.kalEl, 'cal-visible-above');
+                    self.kalEl.style = "margin-top: -" + (kalBoundingRect.height - kalElWrapBoundingRect.height)/2 + "px;";
+                    removeClass(self.kalEl, 'cal-visible-below');
+                }
+                else
+                {
+                    addClass(self.kalEl, 'cal-visible-below');
+                    self.kalEl.style = "";
+                    removeClass(self.kalEl, 'cal-visible-above');
+                }
+            }
+
             self.kalEl.style.zIndex = getZIndex();
         }
 
@@ -1054,6 +1079,8 @@
             hideMonths();
             hideYears();
             removeClass(self.kalEl, 'cal-visible');
+            removeClass(self.kalEl, 'cal-visible-below');
+            removeClass(self.kalEl, 'cal-visible-above');
             _hide();
         }
 
