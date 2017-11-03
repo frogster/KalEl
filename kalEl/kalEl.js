@@ -927,10 +927,9 @@
             if(yearHeaderEl) yearHeaderEl.removeEventListener('click', toggleYears);
             if(monthHeaderEl) monthHeaderEl.removeEventListener('click', toggleMonths);
 
-            if(isPicker){
-                hourHeadEl.removeEventListener('click', showHourSelector);
-                minuteHeadEl.removeEventListener('click', showMinuteSelector);
-            }
+            if(hourHeadEl) hourHeadEl.removeEventListener('click', showHourSelector);
+            if(minuteHeadEl) minuteHeadEl.removeEventListener('click', showMinuteSelector);
+
 
             if(pagerPrevEl) pagerPrevEl.removeEventListener('click', displayPrevMonth);
             if(pagerNextEl) pagerNextEl.removeEventListener('click', displayNextMonth);
