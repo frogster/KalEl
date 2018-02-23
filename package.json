@@ -1,6 +1,6 @@
 {
   "name": "kalel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript Date and Time Picker",
   "main": "kalEl/kalEl.js",
   "directories": {
