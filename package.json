@@ -1,0 +1,26 @@
+{
+  "name": "kalel",
+  "version": "1.0.0",
+  "description": "JavaScript Date and Time Picker",
+  "main": "kalEl/kalEl.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frogster/KalEl.git"
+  },
+  "keywords": [
+    "DateTime",
+    "Picker"
+  ],
+  "author": "Martin Liboswar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frogster/KalEl/issues"
+  },
+  "homepage": "https://github.com/frogster/KalEl#readme"
+}
